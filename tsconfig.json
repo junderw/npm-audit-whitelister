@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "outDir": "./bin",
+    "declaration": false,
+    "rootDir": "./src",
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "esnext.bigint"
+    ],
+    "allowJs": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "esModuleInterop": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "resolveJsonModule": true
+  },
+  "include": [
+      "src/**/*.ts"
+  ],
+  "exclude": [
+      "**/*.spec.ts",
+      "node_modules/**/*"
+  ]
+}

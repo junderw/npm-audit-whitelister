@@ -1,0 +1,51 @@
+{
+  "name": "npm-audit-whitelister",
+  "version": "1.0.0",
+  "description": "bin install for npm audit whitelister",
+  "bin": "./bin/npm-audit-whitelister.js",
+  "files": [
+    "bin"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run tsc",
+    "ci:build-check": "npm run tsc -- --noEmit",
+    "ci:format-check": "npm run format && npm run diff-check",
+    "ci:lint": "npm run tslint",
+    "ci:lockfile-lint": "lockfile-lint --path package-lock.json --allowed-hosts npm yarn --allowed-schemes 'https:'",
+    "clean": "rm -rf ./bin",
+    "diff-check": "git diff --exit-code",
+    "format": "npm run format:import-sort && npm run format:prettier",
+    "format:import-sort": "import-sort --write 'src/**/*.{js,ts}'",
+    "format:prettier": "prettier --config .prettierrc.json --write 'src/**/*.{js,ts}'",
+    "prepare": "npm run build",
+    "test": "echo \"No tests\"",
+    "tsc": "tsc -p tsconfig.json",
+    "tslint": "tslint -p tsconfig.json -c tslint.json"
+  },
+  "keywords": [],
+  "author": "Jonathan Underwood",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "11.13.5",
+    "import-sort": "^6.0.0",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-parser-typescript": "^6.0.0",
+    "import-sort-style-module-alias": "^1.0.4",
+    "lint-staged": "^9.5.0",
+    "lockfile-lint": "^4.3.6",
+    "prettier": "1.17.0",
+    "tslint": "5.16.0",
+    "typescript": "3.9.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "npm run format",
+      "git add"
+    ]
+  }
+}
