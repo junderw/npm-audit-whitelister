@@ -16,6 +16,16 @@ Or in package.json script
     "audit": "npm-audit-whitelister .npmaudit.whitelist.json",
 ```
 
+## Environment args
+
+This uses environment variables to pass args.
+
+```bash
+NPM_AUDIT_IGNORE_DEV=1 # This will ignore any alerts on devDependencies
+NPM_AUDIT_IGNORE_LEVEL=moderate # Anything below this level is ignored
+  # Possible values are low|moderate|high|critical
+```
+
 ## Whitelist file format
 
 `PACKAGE-REGEX:VULNCODE`

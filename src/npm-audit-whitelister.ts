@@ -9,6 +9,12 @@ async function main(_args: string[]): Promise<void> {
   // parge command args
   const [whitelistFilename] = _args;
 
+  const ignoreLevel: AuditLevel | undefined = process.env
+    .NPM_AUDIT_IGNORE_LEVEL as any;
+  if (ignoreLevel !== undefined && !AuditLevels.includes(ignoreLevel)) {
+    throw new Error('Invalid NPM_AUDIT_IGNORE_LEVEL');
+  }
+
   // parse whitelist
   const whiteList: PackageIdPair[] = [];
   if (whitelistFilename !== undefined) {
@@ -54,12 +60,14 @@ async function main(_args: string[]): Promise<void> {
   }
 
   // Run npm audit and parse the results
-  const data = await npmAudit();
+  const data = await npmAudit(ignoreLevel);
 
   // Find errors
   const packagePairs: string[] = [];
   data.actions.forEach(action => {
     action.resolves.forEach(resolve => {
+      if (resolve.dev && process.env.NPM_AUDIT_IGNORE_DEV) return;
+
       const searchData = {
         id: resolve.id,
         package: resolve.path,
@@ -91,8 +99,12 @@ async function main(_args: string[]): Promise<void> {
   }
 }
 
-async function npmAudit(): Promise<INpmAuditResult> {
-  const result = await cmd('npm audit --json', { cwd: process.env.PWD }).then(
+async function npmAudit(ignoreLevel?: AuditLevel): Promise<INpmAuditResult> {
+  const cmdString =
+    ignoreLevel === undefined
+      ? 'npm audit --json'
+      : `npm audit --json --audit-level=${ignoreLevel}`;
+  const result = await cmd(cmdString, { cwd: process.env.PWD }).then(
     v => v,
     e => e as CmdOutput,
   );
@@ -152,6 +164,9 @@ interface IAction {
   depth?: number;
   resolves: IResolvedByAction[];
 }
+
+type AuditLevel = 'low' | 'moderate' | 'high' | 'critical';
+const AuditLevels = ['low', 'moderate', 'high', 'critical'];
 
 // incomplete
 interface INpmAuditResult {
