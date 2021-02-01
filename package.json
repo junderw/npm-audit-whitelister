@@ -1,6 +1,6 @@
 {
   "name": "npm-audit-whitelister",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "bin install for npm audit whitelister",
   "bin": "./bin/npm-audit-whitelister.js",
   "files": [
