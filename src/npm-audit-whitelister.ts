@@ -83,7 +83,13 @@ async function main(_args: string[]): Promise<void> {
           );
         })
       ) {
-        packagePairs.push(`${searchData.package}:${searchData.id}`);
+        // Replace any hex-only intermediate packages with regex for them
+        // Since these hex packages change with every npm audit invocation
+        const pkg = searchData.package.replace(
+          /(?<=(^|>))[0-9a-fA-F]+(?=>)/g,
+          '[0-9a-fA-F]+',
+        );
+        packagePairs.push(`${pkg}:${searchData.id}`);
       }
     });
   });
