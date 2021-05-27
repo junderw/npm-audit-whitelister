@@ -24,6 +24,9 @@ This uses environment variables to pass args.
 NPM_AUDIT_IGNORE_DEV=1 # This will ignore any alerts on devDependencies
 NPM_AUDIT_IGNORE_LEVEL=moderate # Anything below this level is ignored
   # Possible values are low|moderate|high|critical
+
+CMD_MAX_BUFFER=1073741824 # This will extend the internal npm audit output internally to 1 GB
+ # Use when you get a json parse error, it might help
 ```
 
 ## Whitelist file format

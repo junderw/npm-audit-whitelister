@@ -14,6 +14,9 @@ async function main(_args: string[]): Promise<void> {
   if (ignoreLevel !== undefined && !AuditLevels.includes(ignoreLevel)) {
     throw new Error('Invalid NPM_AUDIT_IGNORE_LEVEL');
   }
+  const maxBuffer = process.env.CMD_MAX_BUFFER
+    ? parseInt(process.env.CMD_MAX_BUFFER, 10)
+    : undefined;
 
   // parse whitelist
   const whiteList: PackageIdPair[] = [];
@@ -60,7 +63,7 @@ async function main(_args: string[]): Promise<void> {
   }
 
   // Run npm audit and parse the results
-  const data = await npmAudit(ignoreLevel);
+  const data = await npmAudit(ignoreLevel, maxBuffer);
 
   // Find errors
   const packagePairs: string[] = [];
@@ -105,12 +108,15 @@ async function main(_args: string[]): Promise<void> {
   }
 }
 
-async function npmAudit(ignoreLevel?: AuditLevel): Promise<INpmAuditResult> {
+async function npmAudit(
+  ignoreLevel?: AuditLevel,
+  maxBuffer: number = 100 * 1024 * 1024,
+): Promise<INpmAuditResult> {
   const cmdString =
     ignoreLevel === undefined
       ? 'npm audit --json'
       : `npm audit --json --audit-level=${ignoreLevel}`;
-  const result = await cmd(cmdString, { cwd: process.env.PWD }).then(
+  const result = await cmd(cmdString, { cwd: process.env.PWD, maxBuffer }).then(
     v => v,
     e => e as CmdOutput,
   );
