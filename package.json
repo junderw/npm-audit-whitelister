@@ -1,6 +1,6 @@
 {
   "name": "npm-audit-whitelister",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "bin install for npm audit whitelister",
   "bin": "./bin/npm-audit-whitelister.js",
   "files": [
@@ -15,7 +15,7 @@
     "clean": "rm -rf ./bin",
     "diff-check": "git diff --exit-code",
     "format": "npm run format:import-sort && npm run format:prettier",
-    "format:import-sort": "import-sort --write 'src/**/*.{js,ts}'",
+    "format:import-sort": "import-sort --overwrite src/",
     "format:prettier": "prettier --config .prettierrc.json --write 'src/**/*.{js,ts}'",
     "prepare": "npm run build",
     "test": "echo \"No tests\"",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/node": "11.13.5",
     "import-sort": "^6.0.0",
-    "import-sort-cli": "^6.0.0",
+    "import-sort-cli": "^2.4.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module-alias": "^1.0.4",
     "lint-staged": "^9.5.0",
